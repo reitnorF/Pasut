@@ -145,12 +145,26 @@ else if(isset($_GET['station'])) {
     }
   }
 
+
+
+
+
+
 	if(isset($_GET['date'])) {
 
    //Show Sensor Data (Finally)
 	 echo "Time :". $_GET['date']."<br>";	
+
+   //Use this for one day data
    $sql = "SELECT TimeStamp, Sensor1,Sensor2,Sensor3 FROM data_vsat5 WHERE StationID='". $_GET['station']."' 
 	 AND DATE(TimeStamp) = '".$_GET['date']."' ORDER BY TimeStamp DESC";
+
+   //Use this for all time
+   if($_GET['date'] == "all"){
+   $sql = "SELECT TimeStamp, Sensor1,Sensor2,Sensor3 FROM data_vsat5 WHERE StationID='". $_GET['station']."'ORDER BY TimeStamp DESC";
+   }
+
+
 	 $result = $conn->query($sql);
 	 $timecounter = array();
    $sensor1 = array();
@@ -194,9 +208,6 @@ else if(isset($_GET['station'])) {
             echo "'".$x."',";
         }
         echo "],mode: 'markers'};";
-
-
-
         echo "var data = [sensor1,sensor2,sensor3];Plotly.newPlot('graph', data);</script>";
 		}
 	 }
